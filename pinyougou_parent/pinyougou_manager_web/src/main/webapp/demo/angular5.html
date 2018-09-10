@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+<script type="text/javascript">
+// $scope 是html页面和js数据交互的入口
+ 
+ var app = angular.module("pinyougou",[]);  //[]不能省略
+ 
+ app.controller("myController",function($scope){
+	 
+	 $scope.username="sylllll";
+	 
+	 $scope.showUsername=function(){
+		 
+		 $scope.user={username:"class52"};
+		 
+	 }showUsername
+	 
+	 
+ })
+ 
+ 
+
+</script>
+</head>
+<body ng-app="pinyougou" ng-controller="myController" ng-init="showUsername()">
+     
+<!--      view -->
+     {{username}}
+     
+     {{user.username}}
+   
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+<script type="text/javascript">
+ function showContent(){
+// 	 获取内容
+ var content = document.getElementById("content").value;
+//  alert(content);
+// 	 放到页面上
+document.getElementById("content1").innerHTML=content;
+	 
+//$("#content1").html($("#content").val());
+	 
+ }
+
+</script>
+</head>
+<body ng-app>
+    <input id="content"  onkeyup="showContent()">  <br/>
+    输入的内容是：<span id="content1"></span><br/>
+   
+   
+     <input ng-model="content"  >  <br/>
+    输入的内容是：<span>{{content}}</span>
+   
+   
+</body>
+</html>

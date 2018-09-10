@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+<script type="text/javascript">
+// $scope 是html页面和js数据交互的入口
+
+
+// controller
+  function myController($scope){
+// 	model
+	  $scope.username="syl";
+  }
+
+</script>
+</head>
+<body ng-app ng-controller="myController">
+     
+<!--      view -->
+     {{username}}
+   
+</body>
+</html>

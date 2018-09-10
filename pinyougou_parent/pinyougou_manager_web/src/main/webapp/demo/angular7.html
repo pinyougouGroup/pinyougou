@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+<script type="text/javascript">
+// $scope 是html页面和js数据交互的入口
+ 
+ var app = angular.module("pinyougou",[]);  //[]不能省略
+ 
+ app.controller("myController",function($scope){
+	 $scope.add=function(){
+		 $scope.c =  parseInt($scope.a) + parseInt($scope.b);
+	 }
+	 
+	 
+ })
+ 
+ 
+
+</script>
+</head>
+<body ng-app="pinyougou" ng-controller="myController" >
+ <input ng-model="a" >+<input ng-model="b" ><button ng-click="add()">等于</button><input ng-model="c">
+   
+</body>
+</html>

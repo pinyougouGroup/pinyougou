@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+<script type="text/javascript">
+// $scope 是html页面和js数据交互的入口
+ 
+ var app = angular.module("pinyougou",[]);  //[]不能省略
+ 
+ app.controller("myController",function($scope,$http){
+	 $scope.user1={username:"zhangsan",age:19};
+	 
+	 $scope.copyUser=function(){
+// 		 $scope.user2=$scope.user1;
+		 $scope.user2 =  JSON.parse(    JSON.stringify($scope.user1));
+	 }
+ })
+ 
+ 
+
+</script>
+</head>
+<body ng-app="pinyougou" ng-controller="myController" ng-init="findAll()" >
+  
+  user1：{{user1.username}}  <button ng-click="copyUser()">赋值</button> <br>
+     
+  user2:<input ng-model="user2.username">
+   
+   
+</body>
+</html>

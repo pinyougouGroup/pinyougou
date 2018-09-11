@@ -51,6 +51,16 @@ public class TbSeller   implements Serializable{
     private String bankUser;
 
     private String bankName;
+    
+    public String getStatusStr() {
+		if ("0".equals(status)) {
+			return "未审核";
+		} else if ("1".equals(status)) {
+			return "审核通过";
+		} else {
+			return "审核未通过";
+		}
+	}
 
     public String getSellerId() {
         return sellerId;

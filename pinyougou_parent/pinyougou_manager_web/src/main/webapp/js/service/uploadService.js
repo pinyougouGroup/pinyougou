@@ -15,9 +15,35 @@ app.service("uploadService",function($http){
 //			我们的formdata object.
 			transformRequest: angular.identity
 		})
-		
-		
+	}
+	
+	this.inExcel = function() {
+
+		var formData = new FormData();
+		formData.append("file", file.files[0]);
+
+		return $http({
+			url : '../excel/inExcel',
+			method : 'post',
+			data : formData,
+			headers : {'Content-Type' : undefined},
+			transformRequest : angular.identity
+		})
 	}
 	
 	
+	this.outExcel=function(){
+		
+		return $http({
+			url: '../excel/outExcel',
+        	method: "GET",//接口方法
+            params: {
+                //接口参数
+            },
+            headers: {
+                'Content-type': 'application/json'
+            },
+            responseType: 'arraybuffer'
+        })
+	}
 })

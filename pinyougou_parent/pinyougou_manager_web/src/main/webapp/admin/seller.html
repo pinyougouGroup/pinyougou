@@ -15,9 +15,18 @@
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
     
+    <script src="../plugins/angularjs/angular.min.js"></script>
+	<script src="../plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+	
+	<script src="../js/base_pagination.js"></script>
+	<script src="../js/service/sellerService.js"></script>
+	<script src="../js/service/uploadService.js"></script>
+	<script src="../js/controller/baseController.js"></script>
+	<script src="../js/controller/sellerController.js"></script>
 </head>
 
-<body class="hold-transition skin-red sidebar-mini"  >
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="sellerController" >
   <!-- .box-body -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
@@ -31,17 +40,16 @@
 
                             <!--工具栏-->
                             
-                            <div class="box-tools pull-right">
+                            <div class="box-tools pull-left">
                                 <div class="has-feedback">
-							        公司名称：<input  >
-									店铺名称： <input  >
-									状态：
-									<input type="radio" value="" />全部
-									<input type="radio" value="0" />待审核
-									<input type="radio" value="1" />已审核
-									<input type="radio" value="2" />审核未通过
-									<input type="radio" value="3" />关闭
-									<button class="btn btn-default" >查询</button>                                    
+								    <div class="btn-group">
+						                 <button type="button" class="btn btn-default" title="excel导出" ng-click="download()" ><i class="fa fa-file-o"></i>Excel导出</button>
+						            </div>
+					            
+						            <div class="btn-group">
+						                 <button type="button" class="btn btn-default" title="excel导入" data-target="#uploadModal"  data-toggle="modal"><i class="fa fa-file-o"></i>Excel导入</button>
+						            </div>
+					            
                                 </div>
                             </div>
                             <!--工具栏/-->
@@ -63,31 +71,15 @@
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-			                          <tr>
-			                              <td><input  type="checkbox"></td>			                              
-				                          <td>1</td>
-									      <td>梦琪琪商贸有限公司</td>
-									      <td>梦琪琪</td>
-									      <td>李梦琪</td>
-									      <td>13402312232</td>
-		                                  <td>
-			                                  <span>未审核</span>	
-										     
-		                                  </td>
-		                                  <td class="text-center">                                           
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#sellerModal" >详情</button>                                           
-		                                  </td>
-			                          </tr>
-									  <tr>
-			                              <td><input  type="checkbox"></td>			                              
-				                          <td>2</td>
-									      <td>黑瞎子苹果专卖店</td>
-									      <td>黑瞎子</td>
-									      <td>孙大鹏</td>
-									      <td>13622244111</td>
+			                          <tr ng-repeat="pojo in list">
+				                          <td>{{pojo.sellerId}}</td>
+									      <td>{{pojo.name}}</td>
+									      <td>{{pojo.nickName}}</td>
+									      <td>{{pojo.linkmanName}}</td>
+									      <td>{{pojo.telephone}}</td>
 		                                  <td>
 			                                  
-										      <span>审核通过</span>	
+										      <span>{{pojo.statusStr}}</span>	
 										      
 		                                  </td>
 		                                  <td class="text-center">                                           
@@ -101,7 +93,7 @@
 							 
                         </div>
                         <!-- 数据表格 /-->
-                        
+                        <tm-pagination conf="paginationConf"/>
                         
                         
                         
@@ -235,6 +227,26 @@
 	</div>
 </div>
 
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Excel导入</h3>
+		</div>
+		<div class="modal-body">							
+			<table class="table table-bordered table-striped">
+		      	<tr>
+		      		<td>
+						<input type="file" id="file" />				                
+					    <button ng-click="uploadFile()" class="btn btn-primary" type="button" data-dismiss="modal" aria-hidden="true">导入</button>	
+		      		</td>
+		      	</tr>		      	
+			 </table>				
+		</div>
+	  </div>
+	</div>
+</div>
 
 </body>
 

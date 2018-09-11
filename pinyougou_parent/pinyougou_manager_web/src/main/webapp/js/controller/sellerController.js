@@ -1,5 +1,5 @@
  //控制层 
-app.controller('sellerController' ,function($scope,$controller   ,sellerService){	
+app.controller('sellerController' ,function($scope,$controller,uploadService,sellerService){	
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -89,5 +89,33 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 			}			
 		);
 	}
+	
+	//Excel导入
+	$scope.uploadFile=function(){
+		uploadService.inExcel().success(function(response){
+			if(response.success){
+				alert(response.message);
+				$scope.reloadList();// 刷新列表
+			}else{
+				alert(response.message);
+			}
+		})
+	}
+	
+	//Excel导出
+	$scope.download = function() {
+		uploadService.outExcel().success(function (response) {
+            var blob = new Blob([response], {type: "application/vnd.ms-excel"});
+            var objectUrl = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            document.body.appendChild(a);
+            a.setAttribute('style', 'display:none');
+            a.setAttribute('href', objectUrl);
+            var filename="品优购商家信息.xls";
+            a.setAttribute('download', filename);
+            a.click();
+            URL.revokeObjectURL(objectUrl);
+        })
+    }
     
 });	

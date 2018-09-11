@@ -52,12 +52,15 @@ public class SellerServiceImpl implements SellerService {
 	 */
 	@Override
 	public void add(TbSeller seller) {
-		seller.setStatus("0");
-		seller.setCreateTime(new Date());
+		if(seller.getStatus()==null) {
+			seller.setStatus("0");
+		}
+		if(seller.getCreateTime()==null) {
+			seller.setCreateTime(new Date());
+		}
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		String password = bCryptPasswordEncoder.encode(seller.getPassword());
 		seller.setPassword(password);
-		System.out.println("加密后的密码："+password);
 		sellerMapper.insert(seller);		
 	}
 

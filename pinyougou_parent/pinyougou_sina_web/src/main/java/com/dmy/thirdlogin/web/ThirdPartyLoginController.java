@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @RequestMapping("/sinalogin")
 @Api(value = "第三方登录接口", description = "第三方登录接口")
-//@SessionAttributes({"retUrl"})
+@SessionAttributes({"userName"})
 public class ThirdPartyLoginController  {
 	public String getService() {
 		return "sysUserService";
@@ -189,11 +189,13 @@ public class ThirdPartyLoginController  {
 		String gender = param.getGender();
 		String openid = param.getOpenid();
 		String provider = param.getProvider();*/
+		String userName = param.getUserName();
 		
 		String json = JSONObject.toJSONString(param);
-		System.out.println(json);
+		System.out.println("json:"+json);
+		System.out.println("userName:"+userName);
 		HttpSession session = request.getSession();
-		session.setAttribute("param",json);
+		session.setAttribute("userName",userName);
 		
 	}
 

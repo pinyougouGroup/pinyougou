@@ -13,7 +13,7 @@
 <body>
 	<script type="text/javascript">
 		if (window.opener) {
-			window.opener.location.href = 'http://localhost:8083/index.jsp?aaaaaaaaa';
+			window.opener.location.href = 'http://192.168.181.70:8083/index.jsp?aaaaaaaaa';
 			window.close();
 		}
 	</script>

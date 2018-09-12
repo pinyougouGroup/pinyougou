@@ -19,7 +19,7 @@
     
 </head>
 
-<body ng-app="pinyougou" ng-controller="cartController" ng-init="findCartList()"  >
+<body ng-app="pinyougou" ng-controller="cartController" ng-init="init();findCartList()"  >
 	<!--head-->
 	<div class="top">
 		<div class="py-container">
@@ -89,14 +89,14 @@
 								
 								<li class="yui3-u-1-8"><span class="price">{{orderItem.price.toFixed(2)}}</span></li>
 								<li class="yui3-u-1-8">
-									<a href="javascript:void(0)" ng-click="addGoodsToCartList(orderItem.itemId,-1)"  class="increment mins">-</a>
+									<a href="javascript:void(0)" ng-click="addOrderItemToCart(orderItem.itemId,-1)"  class="increment mins">-</a>
 									<input autocomplete="off" type="text" ng-model="orderItem.num" value="1" minnum="1" class="itxt" />
-									<a href="javascript:void(0)" ng-click="addGoodsToCartList(orderItem.itemId,1)" class="increment plus">+</a>
+									<a href="javascript:void(0)" ng-click="addOrderItemToCart(orderItem.itemId,1)" class="increment plus">+</a>
 								</li>
 								<li class="yui3-u-1-8"><span class="sum">{{orderItem.totalFee.toFixed(2)}}</span></li>
 								<li class="yui3-u-1-8">
-									<a href="#none" ng-click="addGoodsToCartList(orderItem.itemId,-orderItem.num)">删除</a><br />
-									<a href="#none">移到我的关注</a>
+<a href="#none" ng-click="addOrderItemToCart(orderItem.itemId,-orderItem.num)" >删除
+</a><br />									<a href="#none">移到我的关注</a>
 								</li>
 							</ul>
 						</div>
@@ -112,9 +112,9 @@
 					<a href="#none">清除下柜商品</a>
 				</div>
 				<div class="toolbar">
-					<div class="chosed">已选择<span>{{totalNum}}</span>件商品</div>
+					<div class="chosed">已选择<span>{{totalValue.totalNum}}</span>件商品</div>
 					<div class="sumprice">
-						<span><em>总价（不含运费） ：</em><i class="summoney">¥{{totalMoney.toFixed(2)}}</i></span>
+						<span><em>总价（不含运费） ：</em><i class="summoney">¥{{(totalValue.totalMoney).toFixed(2)}}</i></span>
 						<span><em>已节省：</em><i>-¥20.00</i></span>
 					</div>
 					<div class="sumbtn">

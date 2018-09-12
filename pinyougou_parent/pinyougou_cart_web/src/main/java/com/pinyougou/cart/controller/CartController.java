@@ -1,7 +1,6 @@
 package com.pinyougou.cart.controller;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,16 +8,17 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.pinyougou.cart.service.CartService;
 
 import entity.Result;
 import groupEntity.Cart;
+import groupEntity.CartVo;
 import util.CookieUtil;
 
 @RestController
@@ -46,7 +46,7 @@ public class CartController {
 		
 	}
 
-	@RequestMapping("/findCartList")
+	/*@RequestMapping("/findCartList")
 	public List<Cart> findCartList(){
 		String sessionId = getSessionId();
 		
@@ -72,10 +72,10 @@ public class CartController {
 		return cartList_session;
 	}
 	
-	
-	@RequestMapping("/addGoodsToCartList/{itemId}/{num}")
+	*/
+	//@RequestMapping("/addGoodsToCartList/{itemId}/{num}")
 //	跨域：只要域名不一样就是跨域   https:// localhost:8086   http:// localhost:8086 
-	@CrossOrigin(origins= {"http://item.pinyougou.com","http://www.pinyougou.com"})  //允许item.pinyougou.com网站异步请求此方法
+	/*@CrossOrigin(origins= {"http://item.pinyougou.com","http://www.pinyougou.com"})  //允许item.pinyougou.com网站异步请求此方法
 	public Result addGoodsToCartList(@PathVariable("itemId") Long itemId,@PathVariable("num") int num){
 		try {
 			List<Cart> oldCartList = findCartList();
@@ -101,8 +101,46 @@ public class CartController {
 			return new Result(false, "添加失败");
 		}
 
+	}*/
+	@RequestMapping("addItemToCartList")
+	public Result addItemToCartList(@RequestBody CartVo vo){
+	 try {
+		 List<Cart> cartList = vo.getCartList();//locaStorage中的数据
+		 String userId=SecurityContextHolder.getContext().getAuthentication().getName();
+		 if(!"anonymousUser".equals(userId)) { 
+			 List<Cart> list=cartService.findCartListFromRedis(userId);
+			list = cartService.addItemToCartList(list,vo.getItemId(),vo.getNum());
+			 cartService.saveCartListToRedis(userId,list);
+		 }else {
+			 
+		     cartList = cartService.addItemToCartList(vo.getCartList(),vo.getItemId(),vo.getNum());
+
+		  }
+		
+	 return new Result(true, JSON.toJSONString(cartList));
+	 }catch (RuntimeException e) {
+			e.printStackTrace();
+			return new Result(false, e.getMessage());
+	 } catch (Exception e) {
+	 e.printStackTrace();
+	 return new Result(false, "添加失败");
+	 }
 	}
 	
-	
+	@RequestMapping("findCartList")
+	public Result findCartList(@RequestBody CartVo vo){	
+	 //如果登录了就返回合并后的代码如果没登录就返回原来的代码
+	 String userId=SecurityContextHolder.getContext().getAuthentication().getName();
+	 List<Cart> cartList=null;
+	 if(!"anonymousUser".equals(userId)) { 
+		 cartList = cartService.mergeLocalStrageAndRedis(userId,vo);
+	     return new Result(true,JSON.toJSONString(cartList));
+	 }else {
+		 cartList=vo.getCartList();	
+	     return new Result(false,JSON.toJSONString(cartList));
+
+	  }
+	 
+	}
 	
 }

@@ -50,8 +50,7 @@ public class ItempageController {
 				map.put("goods", goods);
 				map.put("tbItem", tbItem);//当前的sku
 				
-				Writer wirter = new FileWriter("D:\\class52\\html\\"+tbItem.getId()+".html");
-				template.process(map, wirter);
+				Writer wirter = new FileWriter("C:\\soft\\generatorToHtml\\"+tbItem.getId()+".html");				template.process(map, wirter);
 				wirter.close();
 			}
 			

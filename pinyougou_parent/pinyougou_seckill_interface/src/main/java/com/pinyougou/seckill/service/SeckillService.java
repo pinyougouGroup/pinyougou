@@ -11,5 +11,6 @@ public interface SeckillService {
 	TbSeckillGoods findFromRedis(Long id);
 
 	void saveSeckillOrder(Long id, String userId);
-
+	
+	void clearOrder() throws Exception;
 }

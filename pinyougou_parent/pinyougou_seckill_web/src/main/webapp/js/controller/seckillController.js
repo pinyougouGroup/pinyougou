@@ -57,7 +57,7 @@ app.controller('seckillController' ,function($scope,seckillService,$location,$in
 	 $scope.saveSeckillOrder=function(){
 		 seckillService.saveSeckillOrder($scope.entity.id).success(function(response){
 			 if(response.success){
-				 alert("订单保存成功,跳转到支付页面");
+				 location.href="http://pay.pinyougou.com/pay.html"
 			 }else{
 				 alert(response.message); 
 			 }

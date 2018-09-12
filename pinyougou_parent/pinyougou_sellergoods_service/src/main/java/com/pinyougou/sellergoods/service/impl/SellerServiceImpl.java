@@ -72,6 +72,7 @@ public class SellerServiceImpl implements SellerService {
 	public void update(TbSeller seller){
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		String password = bCryptPasswordEncoder.encode(seller.getPassword());
+		seller.setPassword(password);
 		sellerMapper.updateByPrimaryKey(seller);
 	}	
 	

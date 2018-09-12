@@ -28,7 +28,9 @@ public class IndexController {
 	@RequestMapping("/showUserName")
 	public String showUserName(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		 String userName = (String) session.getAttribute("userName");
+		ThirdPartyUser thirdPartyUser = (ThirdPartyUser) session.getAttribute("param");
+		String userName = thirdPartyUser.getUserName();
+		String imgurl = thirdPartyUser.getAvatarUrl();
 		return userName;
 	}
 }

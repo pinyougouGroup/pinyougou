@@ -1,6 +1,13 @@
  //控制层 
 app.controller('indexController' ,function($scope,contentService){	
 	
+	$scope.showUserName=function(){
+		contentService.showUserName().success(function(response){
+			$scope.sinausername=JSON.parse(response);
+		})
+	}
+	
+	
 	$scope.findBannerList=function(){
 		contentService.findByCategoryId(1).success(function(response){
 			$scope.bannerList=response;

@@ -35,6 +35,7 @@
   	<module>pinyougou_seckill_service</module>
   	<module>pinyougou_seckill_web</module>
   	<module>pinyougou_seckill_task</module>
+  	<module>pinyougou_sina_web</module>
   </modules>
  
   <!-- 集中定义依赖版本号 -->

@@ -4,6 +4,12 @@
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">    
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="This is my page">
+    <script type="text/javascript" src="http://statics.2cto.com/js/jquery.min.js"></script>
 	<title>品优购，优质！优质！</title>
 	 <link rel="icon" href="assets/img/favicon.ico">
 
@@ -17,7 +23,33 @@
     <script type="text/javascript" src="./js/service/contentService.js"></script>
     <script type="text/javascript" src="./js/controller/indexController.js"></script>
     
+    <script type="text/javascript">
+  
+      var weiboAuthWin;
     
+      /**
+     * 关闭微博子窗口
+     */
+    function closeWeiboWin(){
+        var result = $("#weibo").val();
+        if(result != ""){
+            console.log(result);
+            weiboAuthWin.close();
+        }else{
+            console.log("值为空");
+        }
+    }
+    
+      /**
+     * 微博登录
+     * http://localhost:9090/logback/weibo.jsp这个就是在微博上设置的回调地址
+     */
+      function loginWeibo(){
+          weiboAuthWin = window.open("https://api.weibo.com/oauth2/authorize?client_id=2042476782&response_type=code&state=register&redirect_uri=http://localhost:9980/jsp/sns/redirect.jsp",
+                    '微博授权登录','width=770,height=600,menubar=0,scrollbars=1,'+
+           'resizable=1,status=1,titlebar=0,toolbar=0,location=1');
+      }
+  </script>
     
 </head>
 
@@ -33,7 +65,15 @@
 					<ul class="fl">
 						<li class="f-item">品优购欢迎您！</li>
 						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
-					</ul>
+						</ul>
+						
+							  	欢迎你:{{sinausername}}
+							 
+						<input type="hidden" id="weibo" value="">
+	    				<img onClick="loginWeibo()" src="/img/sinalogin.png">
+						
+						
+						
 					<ul class="fr">
 						<li class="f-item">我的订单</li>
 						<li class="f-item space"></li>

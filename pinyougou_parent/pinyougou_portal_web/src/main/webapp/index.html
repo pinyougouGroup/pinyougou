@@ -75,10 +75,10 @@
 							<input type="hidden" id="weibo" value="">
 		    				<img onClick="loginWeibo()"   src="/img/sinalogin.png">
 						</li>
-						<li class="f-item">
+						<li class="f-item" ng-if="sinauser.username!=null">
 								<img  style="width: 27px;height: 27px" src="{{sinauser.userimage}}">
 							  	<span style="color:red">{{sinauser.username}}</span>
-							  	</li>
+						</li>
 					</ul>	
 								
 							 	

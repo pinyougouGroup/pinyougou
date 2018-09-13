@@ -1,10 +1,10 @@
  //控制层 
 //app.controller('orderController' ,function($scope,cartService){	
- app.controller('orderController' ,function($scope,addressService,cartService,orderService){	
+ app.controller('orderController' ,function($scope,addressService,cartService,orderService,$window){	
 	
 	$scope.entity={paymentType:'1',sourceType:'2'};
 	
-	
+	var storage = $window.localStorage;
 	$scope.saveOrder=function(){
 		  $scope.entity['receiverAreaName']=$scope.selectedAddress.address;
 		  $scope.entity['receiverMobile']=$scope.selectedAddress.mobile;
@@ -13,9 +13,14 @@
 		  orderService.save( $scope.entity).success(function(response){
 			  if(response.success){
 				  location.href="http://pay.pinyougou.com/pay.html";
-			  }else{
-				  alert(response.message);
 			  }
+			  if($scope.entity.paymentType=='2'){
+					 // alert("即将跳转到易宝支付页面。。。。")//提交订单成功后去执行易宝支付的方法
+					  location.href="http://pay.pinyougou.com/yeeBaoPay.html";
+				  }
+				  if($scope.entity.paymentType=='3'){
+					  alert("可以跳转到一个下单成功，等待收获的提示 页面。。。")
+				  }
 		  })
 	}
 	
@@ -47,7 +52,7 @@
 	}
 	
 	
-	 $scope.findCartList=function(){
+	/* $scope.findCartList=function(){
 		 cartService.findCartList().success(function(response){
 			 $scope.cartList=response;
 			 
@@ -63,10 +68,24 @@
 			 
 		 })
 		 
-	 }
+	 }*/
 	 
  
-	 
+	$scope.findCartList=function () {
+		 var cartList = storage.getItem("cartList");
+		 if(cartList == null){
+		 cartList = "[]";
+		 }
+		 cartService.findCartList(JSON.parse(cartList)).success(function (response) 
+		{
+		  $scope.cartList = JSON.parse(response.message);
+		  if(response.success){
+			  storage.clear();
+		  }
+		 
+		 $scope.totalValue=cartService.sum($scope.cartList);
+		 });
+		 }
 	 
     
 });	

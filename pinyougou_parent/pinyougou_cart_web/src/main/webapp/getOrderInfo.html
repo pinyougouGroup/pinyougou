@@ -159,7 +159,8 @@
 					<div class="step-cont">
 						<ul class="payType">
 							<li class="selected" ng-click="entity.paymentType=1">微信付款<span title="点击取消选择"></span></li>
-							<li ng-click="entity.paymentType=2">货到付款<span title="点击取消选择"></span></li>
+							<li  ng-click="entity.paymentType=2">易宝支付<span title="点击取消选择"></span></li>
+							<li  ng-click="entity.paymentType=3">货到付款<span title="点击取消选择"></span></li>
 						</ul>
 					</div>
 					<div class="hr"></div>
@@ -219,8 +220,8 @@
 		<div class="order-summary">
 			<div class="static fr">
 				<div class="list">
-					<span><i class="number">{{totalNum}}</i>件商品，总商品金额</span>
-					<em class="allprice">¥{{totalMoney.toFixed(2)}}</em>
+					<span><i class="number">{{totalValue.totalNum}}</i>件商品，总商品金额</span>
+					<em class="allprice">¥{{(totalValue.totalMoney).toFixed(2)}}</em>
 				</div>
 				<div class="list">
 					<span>返现：</span>
@@ -233,7 +234,7 @@
 			</div>
 		</div>
 		<div class="clearfix trade">
-			<div class="fc-price">应付金额:　<span class="price">¥{{totalMoney.toFixed(2)}}</span></div>
+			<div class="fc-price">应付金额:　<span class="price">¥{{(totalValue.totalMoney).toFixed(2)}}</span></div>
 			<div class="fc-receiverInfo">寄送至:{{selectedAddress.address}} 收货人：{{selectedAddress.contact}} {{selectedAddress.mobile}}</div>
 		</div>
 		<div class="submit">

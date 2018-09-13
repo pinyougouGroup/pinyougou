@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    
+    <!--Bootstrap-->
+  	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <title>订单管理</title>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+	<script src="../plugins/layDate/laydate.js"></script>
+ 
+   
+<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+<script type="text/javascript" src="../js/base.js"></script>
+<script type="text/javascript" src="../js/service/orderService.js"></script>
+<script type="text/javascript" src="../js/controller/orderController.js"></script>
+</head>
+<body ng-app="pinyougou" ng-controller="orderController" ng-init="findOrderList()"  >
+  <!-- .box-body -->
+                
+                    <div class="box-header with-border">
+                        <h3 class="box-title">订单管理</h3>
+                    </div>
+
+                    <div class="box-body">
+
+                        <!-- 数据表格 -->
+                        <div class="table-box">
+                      
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback" >
+                                 
+                        
+                            状态：<select ng-model="tbOrder.status" ng-options="t.id as t.name for  t in orderSelect"  >
+                            </select>            
+                                        
+										
+									时间范围：<select ng-model="tbOrder.date" ng-options="d.id as d.name for d  in orderSelectDate">                                      	                                               
+                                         	</select>
+                                  
+	    	  订单日期：<input type="text" id="test1"  >
+				
+                <button class="btn btn-info" ng-click="findOrderByDataSelect()" >查询</button>  
+           <!-- 时间插件脚本 -->     
+           
+	<script>
+			   var _date;
+		//执行一个laydate实例
+			laydate.render({
+			  elem: '#test1',            //指定元素
+			  done:function(v,date){
+				  _date=v;
+			  }
+			});
+	</script>
+										      							
+									                                  
+                                </div>
+                            </div>
+                            <!--工具栏/-->
+
+			                  <!--数据列表-->
+			                  <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+			                      <thead>
+			                          <tr>
+			                              <th class="" style="padding-right:0px">
+			                                  <input id="selall" type="checkbox" class="icheckbox_square-blue">
+			                              </th> 										  
+									      <th class="sorting">商品名称</th>
+									      <th class="sorting">商品价格</th>
+									      <th class="sorting">商品数量</th>
+									      <th class="sorting">订单实付金额</th>
+										  <th class="sorting">订单来源</th>
+									      <th class="sorting">创建时间</th>
+									      <th class="sorting">状态</th>									     						
+					                      
+			                          </tr>
+			                      </thead>
+			                      <tbody>
+			                          <tr ng-repeat="pojo in entity">
+			                              <td><input  type="checkbox"></td>			                              
+				                        
+									      <td>{{pojo.tbGoods.goodsName}}</td>
+									      <td>{{pojo.tbOrderItem.price}}</td>
+									      <td>{{pojo.tbOrderItem.num}}</td>
+									      <td>{{pojo.tbOrder.payment}}</td>
+										  <td>{{sourceTypeList[pojo.tbOrder.sourceType]}}</td>
+									      <td>{{pojo.tbOrder.createTime}}</td>
+		                                  <td>
+		                                  	<span>
+		                                  		
+		                                  		{{statusList[pojo.tbOrder.status]}}
+		                                  	</span>	                                  	
+		                                  </td>		                                  
+		                                 
+			                          </tr>
+			                      </tbody>
+			                  </table>
+			                  <!--数据列表/-->                        
+							  
+							 
+                        </div>
+                        <!-- 数据表格 /-->
+                        
+                        
+                     </div>
+                    <!-- /.box-body -->
+		
+</body>
+
+</html>

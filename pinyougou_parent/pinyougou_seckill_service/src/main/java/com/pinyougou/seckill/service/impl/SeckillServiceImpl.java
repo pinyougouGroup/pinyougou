@@ -27,7 +27,7 @@ import util.IdWorker;
 
 @Service
 public class SeckillServiceImpl implements SeckillService{
-
+	
 	@Value("${appid}")
 	private String appid;
 	
@@ -39,7 +39,6 @@ public class SeckillServiceImpl implements SeckillService{
 	
 	@Value("${notifyurl}")
 	private String notifyurl;
-	
 	
 	@Autowired
 	private RedisTemplate  redisTemplate;
@@ -91,10 +90,14 @@ public class SeckillServiceImpl implements SeckillService{
 //		 if(seckillGoods==null) {
 //			throw new RuntimeException("已售罄");
 //		 }
+		
+
+		 
 	}
 
 	@Override
 	public void clearOrder() throws Exception {
+		
 		TbSeckillOrderExample example =new TbSeckillOrderExample();
 		example.createCriteria().andStatusEqualTo("0");
 		List<TbSeckillOrder> seckillOrder = seckillOrderMapper.selectByExample(example );
@@ -139,5 +142,5 @@ public class SeckillServiceImpl implements SeckillService{
 		
 	}
 	
-	
 }
+

@@ -27,6 +27,7 @@ public class CreateOrder implements Runnable {
 	@Autowired
 	private TbSeckillGoodsMapper  seckillGoodsMapper;
 	
+
 	@Autowired
 	private TbPayLogMapper payLogMapper;
 	
@@ -56,6 +57,7 @@ public class CreateOrder implements Runnable {
 		 }else {
 			 redisTemplate.boundHashOps("seckill_goods").put(id, seckillGoods); 
 		 }
+		 
 		 
 		 redisTemplate.boundHashOps("seckill_order").put(userId, seckillOrder);//待支付的秒杀的订单
 

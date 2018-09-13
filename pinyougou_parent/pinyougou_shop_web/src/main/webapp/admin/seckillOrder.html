@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="../css/style.css">
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-    
+    <link rel="stylesheet" href="../libs/bootstrap.min.css">
+	<link rel="stylesheet" href="../libs/jquery.min.js">
+	
     <script type="text/javascript" src="../plugins/angularjs/angular.min.js">  </script>
     <!-- 分页组件开始 -->
 	<script src="../plugins/angularjs/pagination.js"></script>
@@ -59,7 +61,7 @@
 			                              <th class="" style="padding-right:0px">
 			                                  <input id="selall" type="checkbox" class="icheckbox_square-blue">
 			                              </th> 
-										                               <th class="sorting">主键</th>			
+							  <th class="sorting">主键</th>			
                              <th class="sorting">秒杀商品ID</th>			
                              <th class="sorting">支付金额</th>			
                              <th class="sorting">用户</th>			
@@ -78,18 +80,18 @@
 			                      <tbody>
 			                          <tr ng-repeat="entity in list">
 			                              <td><input  type="checkbox" ng-click="updateSelection($event,entity.id)"></td>			                              
-				                                                       <td>{{entity.id}}</td>			
-                             <td>{{entity.seckillId}}</td>			
-                             <td>{{entity.money}}</td>			
-                             <td>{{entity.userId}}</td>			
-                             <td>{{entity.sellerId}}</td>			
-                             <td>{{entity.createTime}}</td>			
-                             <td>{{entity.payTime}}</td>			
-                             <td>{{entity.status}}</td>			
-                             <td>{{entity.receiverAddress}}</td>			
-                             <td>{{entity.receiverMobile}}</td>			
-                             <td>{{entity.receiver}}</td>			
-                             <td>{{entity.transactionId}}</td>			
+				                           <td>{{entity.id}}</td>			
+		                             <td>{{entity.seckillId}}</td>			
+		                             <td>{{entity.money}}</td>			
+		                             <td>{{entity.userId}}</td>			
+		                             <td>{{entity.sellerId}}</td>			
+		                             <td>{{entity.createTime}}</td>			
+		                             <td>{{entity.payTime}}</td>			
+		                             <td>{{entity.status}}</td>			
+		                             <td>{{entity.receiverAddress}}</td>			
+		                             <td>{{entity.receiverMobile}}</td>			
+		                             <td>{{entity.receiver}}</td>			
+		                             <td>{{entity.transactionId}}</td>			
 		                                 
 		                                  <td class="text-center">                                           
 		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id)" >修改</button>                                           

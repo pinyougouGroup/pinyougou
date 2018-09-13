@@ -37,6 +37,8 @@ public class ThirdPartyLoginController  {
 	
 	private String username;
 
+	private String userimage;
+	
 	public String getService() {
 		return "sysUserService";
 	}
@@ -45,26 +47,27 @@ public class ThirdPartyLoginController  {
 		
 		private static final long serialVersionUID = 1L;
 		
-		private Integer status;
-		private String message;
-
-		public Result(Integer status, String message) {
-			this.status = status;
-			this.message = message;
-		}
+		private String username;
+		private String userimage;
 		
-		public Integer getStatus() {
-			return status;
+		public String getUsername() {
+			return username;
 		}
-		public void setStatus(Integer status) {
-			this.status = status;
+		public void setUsername(String username) {
+			this.username = username;
 		}
-		public String getMessage() {
-			return message;
+		public String getUserimage() {
+			return userimage;
 		}
-		public void setMessage(String message) {
-			this.message = message;
+		public void setUserimage(String userimage) {
+			this.userimage = userimage;
 		}
+		public Result(String username, String userimage) {
+			super();
+			this.username = username;
+			this.userimage = userimage;
+		}
+
 		
 		
 	}
@@ -72,7 +75,7 @@ public class ThirdPartyLoginController  {
 	@RequestMapping("/showUserName")
 	public @ResponseBody Result showUserName() {
 		
-		return new Result(200, username);
+		return new Result(username,userimage);
 		
 	}
 	
@@ -194,6 +197,7 @@ public class ThirdPartyLoginController  {
 					thirdUser.setProvider("SINA");
 					//thirdPartyLogin(request, response,thirdUser);//并存储用户登录信息到session中 名为param thirdUser
 					username=thirdUser.getUserName();
+					userimage = thirdUser.getAvatarUrl();
 					
 					// 跳转到登录成功界面
 					modelMap.put("retUrl", ThirdPartyResources.ThirdLoginSuccess);//已授权

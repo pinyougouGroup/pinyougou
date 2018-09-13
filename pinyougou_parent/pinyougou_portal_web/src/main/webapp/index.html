@@ -56,6 +56,7 @@
 <body ng-app="pinyougou" ng-controller="indexController" ng-init="findBannerList();showUserName()" >
 	<!-- 头部栏位 -->
 	<!--页面顶部-->
+	
 <div id="nav-bottom">
 	<!--顶部-->
 	<div class="nav-top">
@@ -64,7 +65,7 @@
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">品优购欢迎您！</li>
-						<li class="f-item" ng-if="sinausername==null">请
+						<li class="f-item" ng-if="sinauser.username==null">请
 							<a href="login.html" target="_blank">登录
 							</a>
 							<span>
@@ -74,9 +75,13 @@
 							<input type="hidden" id="weibo" value="">
 		    				<img onClick="loginWeibo()"   src="/img/sinalogin.png">
 						</li>
+						<li class="f-item">
+								<img  style="width: 27px;height: 27px" src="{{sinauser.userimage}}">
+							  	<span style="color:red">{{sinauser.username}}</span>
+							  	</li>
 					</ul>	
-							  	<span style="color:red">{{sinausername}}</span>
-							 
+								
+							 	
 						
 						
 						

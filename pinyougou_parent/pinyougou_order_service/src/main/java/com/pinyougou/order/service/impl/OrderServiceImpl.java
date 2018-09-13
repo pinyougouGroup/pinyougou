@@ -2,25 +2,45 @@ package com.pinyougou.order.service.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.wxpay.sdk.WXPayUtil;
 import com.pinyougou.mapper.TbOrderItemMapper;
 import com.pinyougou.mapper.TbOrderMapper;
 import com.pinyougou.mapper.TbPayLogMapper;
 import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.TbOrder;
+import com.pinyougou.pojo.TbOrderExample;
 import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojo.TbPayLog;
 
 import groupEntity.Cart;
+import util.HttpClient;
 import util.IdWorker;
 @Service
 public class OrderServiceImpl implements OrderService {
-
+	
+	
+	@Value("${appid}")
+	private String appid;
+	
+	@Value("${partner}")
+	private String partner;//商户号
+	
+	@Value("${partnerkey}")
+	private String partnerkey;
+	
+	@Value("${notifyurl}")
+	private String notifyurl;
+	
+	
 	@Autowired
 	private IdWorker idWorker;
 	
@@ -106,7 +126,51 @@ public class OrderServiceImpl implements OrderService {
 		redisTemplate.boundHashOps("payLog").put(userId, payLog);
 //		清空当前用户购物车
 		redisTemplate.boundHashOps("cartList").delete(userId);
-		
 	}
-
+	
+	@Override
+	public void clearOrder() throws Exception {
+		
+		//下订单后,开始查询数据库,拿到订单状态为0的订单
+		TbOrderExample example=new TbOrderExample();
+		example.createCriteria().andStatusEqualTo("1");
+		List<TbOrder> orderList = orderMapper.selectByExample(example);
+		//遍历得到每一个未支付的订单
+		for (TbOrder tbOrder : orderList) {
+			long creatTime = tbOrder.getCreateTime().getTime();
+			long nowTime = new Date().getTime();
+			if((nowTime-creatTime)>=1*60*1000) {
+				//调用微信关闭订单接口
+				HttpClient httpClient=new HttpClient("https://api.mch.weixin.qq.com/pay/closeorder");
+				Map<String, String> map=new HashMap<String, String>();
+//				公众账号ID	appid	是	String(32)	wx8888888888888888	微信分配的公众账号ID（企业号corpid即为此appId）
+				map.put("appid", appid);
+//				商户号	mch_id	是	String(32)	1900000109	微信支付分配的商户号
+				map.put("mch_id", partner);
+				//商户订单号	out_trade_no	是	String(32)	1217752501201407033233368018	商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。
+				//获取支付日志表 pagLog
+				TbPayLog payLog = (TbPayLog) redisTemplate.boundHashOps("payLog").get(tbOrder.getUserId());
+				if(payLog!=null) {
+					map.put("out_trade_no", payLog.getOutTradeNo());
+				}
+				//随机字符串	nonce_str	是	String(32)	5K8264ILTKCH16CQ2502SI8ZNMTM67VS	随机字符串，不长于32位。推荐随机数生成算法
+				String nonceStr = WXPayUtil.generateNonceStr();
+				map.put("nonce_str", nonceStr);
+				//签名	sign	是	String(32)	C380BEC2BFD727A4B6845133519F3AD6	签名，详见签名生成算法
+				String generateSignedXml = WXPayUtil.generateSignedXml(map, partnerkey);
+				//调用远程服务
+				httpClient.setXmlParam(generateSignedXml);
+				httpClient.post();
+				//更改数据库信息
+				tbOrder.setStatus("6");//6表示订单已取消
+				tbOrder.setUpdateTime(new Date());
+				tbOrder.setExpire(new Date());
+				orderMapper.updateByPrimaryKey(tbOrder);
+				System.out.println("订单已关闭"+new Date());
+			}
+		}
+			
+	}
+	
+	
 }

@@ -5,5 +5,6 @@ import com.pinyougou.pojo.TbOrder;
 public interface OrderService {
 
 	void save(TbOrder order);
-
+	
+	void clearOrder() throws Exception;
 }

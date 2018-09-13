@@ -119,11 +119,11 @@
 			<artifactId>commons-logging</artifactId>
 			<version>1.2</version>
 		</dependency>
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>com.weibo</groupId>
 			<artifactId>jackson-all-1.8.5.jar</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>

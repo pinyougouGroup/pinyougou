@@ -1,20 +1,21 @@
 package com.dmy.thirdlogin.web;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dmy.thirdlogin.support.ThirdPartyLoginHelper;
@@ -27,15 +28,53 @@ import io.swagger.annotations.ApiOperation;
 /**
  * 第三方登录控制类
  */
+
 @Controller
 @RequestMapping("/sinalogin")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 @Api(value = "第三方登录接口", description = "第三方登录接口")
-@SessionAttributes({"userName"})
 public class ThirdPartyLoginController  {
+	
+	private String username;
+
 	public String getService() {
 		return "sysUserService";
 	}
 	
+	class Result implements Serializable{
+		
+		private static final long serialVersionUID = 1L;
+		
+		private Integer status;
+		private String message;
+
+		public Result(Integer status, String message) {
+			this.status = status;
+			this.message = message;
+		}
+		
+		public Integer getStatus() {
+			return status;
+		}
+		public void setStatus(Integer status) {
+			this.status = status;
+		}
+		public String getMessage() {
+			return message;
+		}
+		public void setMessage(String message) {
+			this.message = message;
+		}
+		
+		
+	}
+	
+	@RequestMapping("/showUserName")
+	public @ResponseBody Result showUserName() {
+		
+		return new Result(200, username);
+		
+	}
 	
 	@RequestMapping("/sns")
 	@ApiOperation(value = "用户登录", httpMethod = "GET")
@@ -69,7 +108,7 @@ public class ThirdPartyLoginController  {
 
 	@RequestMapping("/callback/wx")
 	@ApiOperation(value = "微信登录回调", httpMethod = "GET")
-	public String wxCallback(HttpServletRequest request, ModelMap modelMap) {
+	public String wxCallback(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap) {
 		String host = request.getHeader("host");
 		try {
 			String code = request.getParameter("code");
@@ -81,7 +120,7 @@ public class ThirdPartyLoginController  {
 					// 获取第三方用户信息存放到session中
 					ThirdPartyUser thirdUser = ThirdPartyLoginHelper.getWxUserinfo(map.get("access_token"), openId);
 					thirdUser.setProvider("WX");
-					thirdPartyLogin(request, thirdUser);
+					//thirdPartyLogin(request,response, thirdUser);
 					// 跳转到登录成功界面
 					modelMap.put("retUrl", ThirdPartyResources.ThirdLoginSuccess);
 				} else {// 如果未获取到OpenID
@@ -100,7 +139,7 @@ public class ThirdPartyLoginController  {
 
 	@RequestMapping("/callback/qq")
 	@ApiOperation(value = "QQ登录回调", httpMethod = "GET")
-	public String qqCallback(HttpServletRequest request, ModelMap modelMap) {
+	public String qqCallback(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap) {
 		String host = request.getHeader("host");
 		try {
 			String code = request.getParameter("code");
@@ -112,7 +151,7 @@ public class ThirdPartyLoginController  {
 					// 获取第三方用户信息存放到session中
 					ThirdPartyUser thirdUser = ThirdPartyLoginHelper.getQQUserinfo(map.get("access_token"), openId);
 					thirdUser.setProvider("QQ");
-					thirdPartyLogin(request, thirdUser);
+					//thirdPartyLogin(request,response, thirdUser);
 					// 跳转到登录成功界面
 					modelMap.put("retUrl", ThirdPartyResources.ThirdLoginSuccess);
 				} else {// 如果未获取到OpenID
@@ -140,7 +179,7 @@ public class ThirdPartyLoginController  {
 		//ModelMap对象主要用于把controller方法处理的数据传递到jsp界面，
 		//在controller方法中把jsp界面需要的数据放到ModelMap对象中即可。
 		//它的作用类似request对象的setAttribute方法
-	public String sinaCallback(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap) {
+	public String sinaCallback(HttpServletRequest request, HttpServletResponse response,ModelMap modelMap) {
 		String host = request.getHeader("host");
 		try {
 			String code = request.getParameter("code");
@@ -153,7 +192,9 @@ public class ThirdPartyLoginController  {
 					// 获取第三方用户信息存放到session中                                                获取新浪用户信息
 					ThirdPartyUser thirdUser = ThirdPartyLoginHelper.getSinaUserinfo(json.getString("access_token"),uid);
 					thirdUser.setProvider("SINA");
-					thirdPartyLogin(request, thirdUser);//并存储用户登录信息到session中 名为param thirdUser
+					//thirdPartyLogin(request, response,thirdUser);//并存储用户登录信息到session中 名为param thirdUser
+					username=thirdUser.getUserName();
+					
 					// 跳转到登录成功界面
 					modelMap.put("retUrl", ThirdPartyResources.ThirdLoginSuccess);//已授权
 				} else {// 如果未获取到OpenID
@@ -171,33 +212,19 @@ public class ThirdPartyLoginController  {
 			modelMap.put("retUrl", "-1");
 			e.printStackTrace();
 		}
-		return "sns/redirect";
+		return "/jsp/sns/redirect.jsp";
 		
 	}
 
-	private void thirdPartyLogin(HttpServletRequest request, ThirdPartyUser param) {
-	    /**
+	/*private void thirdPartyLogin(HttpServletRequest request,HttpServletResponse response, ThirdPartyUser param) {
+	    *//**
 	     * 此处可将登录的用户进行绑定或者将已经登录（QQ，微信，新浪微博）的用户的token缓存  并存储用户登录信息
 	     * 以此来判断用户是否登录成功
 	     *
-	     */
-	/*	String userName = param.getUserName();
-		String token = param.getToken();
-		Integer userId = param.getUserId();
-		String account = param.getAccount();
-		String avatarUrl = param.getAvatarUrl();
-		String gender = param.getGender();
-		String openid = param.getOpenid();
-		String provider = param.getProvider();*/
-		String userName = param.getUserName();
+	     *//*
+		username = param.getUserName();
 		
-		String json = JSONObject.toJSONString(param);
-		System.out.println("json:"+json);
-		System.out.println("userName:"+userName);
-		HttpSession session = request.getSession();
-		session.setAttribute("userName",userName);
-		
-	}
+	}*/
 
 	private String getRedirectUrl(HttpServletRequest request, String type) {
 		String url = "";

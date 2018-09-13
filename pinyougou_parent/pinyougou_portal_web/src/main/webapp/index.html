@@ -64,13 +64,19 @@
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">品优购欢迎您！</li>
-						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
-						</ul>
-						
-							  	欢迎你:{{sinausername}}
+						<li class="f-item" ng-if="sinausername==null">请
+							<a href="login.html" target="_blank">登录
+							</a>
+							<span>
+								<a href="register.html" target="_blank">免费注册
+								</a>
+							</span>
+							<input type="hidden" id="weibo" value="">
+		    				<img onClick="loginWeibo()"   src="/img/sinalogin.png">
+						</li>
+					</ul>	
+							  	<span style="color:red">{{sinausername}}</span>
 							 
-						<input type="hidden" id="weibo" value="">
-	    				<img onClick="loginWeibo()"   src="/img/sinalogin.png">
 						
 						
 						

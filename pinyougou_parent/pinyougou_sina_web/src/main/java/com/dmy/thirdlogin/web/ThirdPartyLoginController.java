@@ -2,10 +2,8 @@ package com.dmy.thirdlogin.web;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 第三方登录控制类
+ * restcontroller 相当于responsebody 加controller
  */
 
 @Controller

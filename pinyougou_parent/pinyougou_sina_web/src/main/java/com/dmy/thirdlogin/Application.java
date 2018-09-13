@@ -8,7 +8,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 
 /**
- * 启动类;
+ * 启动类...
  */
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer{

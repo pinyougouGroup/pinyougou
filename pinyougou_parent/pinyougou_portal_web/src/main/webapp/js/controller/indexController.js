@@ -3,7 +3,8 @@ app.controller('indexController' ,function($scope,contentService){
 	
 	$scope.showUserName=function(){
 		contentService.showUserName().success(function(response){
-			$scope.sinausername=response.message;
+			$scope.sinauser=response;
+			
 		})
 	}
 	
